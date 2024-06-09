@@ -1,5 +1,5 @@
 # Active Directory Lab Overview
-
+![Active Directory Lab](https://i.imgur.com/2BOPubi.png)
 ## Introduction
 
 In this lab I used two virtual machines on VirtualBox to simulate an Active Directory environment using Windows Server 2019, and Windows 10. After configuring IP Addressing, DNS, AD/DS, NAT/RAS, and DHCP, I use a PowerShell script to create 1000 users in Active Directory. Finally, we create a client machine on Windows 10 to connect to the virtual network and add it to Active Directory. 
