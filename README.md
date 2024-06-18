@@ -2,29 +2,50 @@
 ![Active Directory Lab](https://i.imgur.com/2BOPubi.png)
 ## Introduction
 
-In this lab I used two virtual machines on VirtualBox to simulate an Active Directory environment using Windows Server 2019, and Windows 10. After configuring IP Addressing, DNS, AD/DS, NAT/RAS, and DHCP, I use a PowerShell script to create 1000 users in Active Directory. Finally, we create a client machine on Windows 10 to connect to the virtual network and add it to Active Directory. 
+In this lab, I utilized VirtualBox to simulate an Active Directory environment using Windows Server 2019 and Windows 10 virtual machines. The process involved configuring IP Addressing, DNS, AD DS, NAT/RAS, and DHCP. I then employed a PowerShell script to create 1,000 users in Active Directory. Finally, I set up a Windows 10 client machine, connected it to the virtual network, and added it to Active Directory.
 
 ## Process
 
-First, I downloaded VirtualBox and an ISO for both Windows Server 2019 and Windows 10. The first virtual machine I downloaded is the Domain Controller (Server 19), which will house Active Directory. The DC houses 2 network adaptors, the first is to connect to the outside internet, and the second is to connect to the VirtualBox private network. You must make sure to assign 2 adaptors to the DC virtual machine in settings, the first using NAT, and the second dedicated to the internal network.
 
-Next, I set up IP Addressing for the internal network. After that, I set up Active Directory Domain Services and assign the Server 2019 machine as the DC using the domain: mydomain.com. Once the domain is created, I create an Organizational Unit named _ADMINS to add myself as a domain administrator.
+### Setting Up the Environment
 
-The third step is to install RAS/NAT to allow the Windows 10 client (second VM) to be on the private virtual network, but still be able to access the internet via the DC. To do this, go to add roles & features > remote access > routing > install. Once completed, go to routing and remote access from server manager to install NAT (this allows internal clients to access internet using one public IP address).
+1. **Download and Install VirtualBox and ISOs**:
+   - Downloaded VirtualBox along with ISOs for Windows Server 2019 and Windows 10.
 
-Once RAS/NAT is set up, we will set up a DHCP server on the DC with the scope information pictured at the top. To do this, we go to add roles & features > DHCP Server > install. We can now go to tools > DHCP in order to set up the scope to give IP addresses in the range with the correct subnet mask. In DHCP settings we will use the DC IP address as the default gateway. 
+2. **Configure the Domain Controller (Server 2019)**:
+   - Created a virtual machine for the Domain Controller (DC) with two network adaptors: one for external internet connection (NAT) and one for the VirtualBox private network (internal).
 
-This is my favorite part where we will use a PowerShell script to add 1000 users to Active Directory. To make it easier, we used a random name generator script to add the 1000 names to a .txt file. This way we can easily call on that text file in the PowerShell script.
+3. **Configure IP Addressing**:
+   - Set up IP addressing for the internal network.
 
-Important: you must enter the command below before running the powershell script, or it will not work:
+4. **Set Up Active Directory Domain Services**:
+   - Assigned the Server 2019 machine as the DC with the domain `mydomain.com`.
+   - Created an Organizational Unit (OU) named `_ADMINS` and added myself as a domain administrator.
 
-Set-ExecutionPolicy Unrestricted
+### Network Configuration
 
-Now that the script has run and there are 1000 users in Active Directory, you can mess around adding people to different Organizational Units and assigning different permissions, etc. 
+5. **Install RAS/NAT**:
+   - Enabled the Windows 10 client to access the internet through the DC by setting up RAS/NAT.
+   - Installed Remote Access and configured NAT to allow internal clients to use a single public IP address for internet access.
 
-The final step is to create the second virtual machine running Windows 10. I named it client1 for simplicity. Once the second VM is up and running, I go to the command prompt and type: ipconfig, then: ping www.google.com.
-This is to make sure the DNS server is working and the DC is properly NATTING and forwarding traffic to the internet, and then returning the ping back to the client machine.
+6. **Set Up DHCP Server**:
+   - Configured a DHCP server on the DC to provide IP addresses within a specified range and subnet mask.
+   - Used the DC's IP address as the default gateway in DHCP settings.
+
+### Automating User Creation
+
+7. **Automate User Creation with PowerShell**:
+   - Utilized a PowerShell script to create 1,000 users in Active Directory.
+   - Generated random names using a script and stored them in a `.txt` file for easy access during user creation.
+   - **Important**: Set the execution policy to unrestricted before running the PowerShell script using the command: `Set-ExecutionPolicy Unrestricted`.
+
+### Final Steps
+
+8. **Set Up Windows 10 Client**:
+   - Created a second virtual machine running Windows 10, named `client1`.
+   - Verified network connectivity and DNS functionality by using `ipconfig` and `ping` commands to ensure proper NAT and internet access.
+
 
 ## Conclusion
 
-In conclusion, PowerShell is a powerful tool to do many tasks and in this case it saved me a ton of legwork in creating users in my Active Directory to mess around with and assign different permissions. There is a lot of flexibility with this lab in managing a server and I plan to continue to redo the lab many times to find new ways of simplifying tasks.
+This lab highlighted the power and efficiency of PowerShell in automating administrative tasks, such as creating users in Active Directory. The setup provided valuable experience in managing a server environment and configuring network services. I look forward to refining and simplifying these processes further in future iterations of this lab.
